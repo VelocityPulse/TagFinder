@@ -18,6 +18,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.cpulse.tagfinder.core.Utils;
+
 public class BrowserActivity extends AppCompatActivity {
 
     private static String TAG = "BROWSER ACTIVITY";
@@ -39,7 +41,7 @@ public class BrowserActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (isNullOrEmpty(mWebView.getUrl()))
+        if (Utils.isNullOrEmpty(mWebView.getUrl()))
             processURLSearch(HOME_URL);
     }
 
@@ -84,6 +86,7 @@ public class BrowserActivity extends AppCompatActivity {
                 if (iActionId == EditorInfo.IME_ACTION_SEARCH) {
                     processURLSearch(iTextView.getText().toString());
                     oHandled = true;
+                    Utils.hideKeyboard(BrowserActivity.this, iTextView);
                 }
                 return oHandled;
             }
@@ -97,10 +100,8 @@ public class BrowserActivity extends AppCompatActivity {
             @Override
             public void doUpdateVisitedHistory(WebView iView, String iUrl, boolean iIsReload) {
                 super.doUpdateVisitedHistory(iView, iUrl, iIsReload);
-                if (!iIsReload) {
+                if (!iIsReload)
                     mSearchEditText.setText(iUrl);
-                    showLongToast(BrowserActivity.this, iUrl);
-                }
             }
 
             @Override
@@ -129,7 +130,7 @@ public class BrowserActivity extends AppCompatActivity {
     }
 
     private void processURLSearch(String iURL) {
-        if (isNullOrEmpty(iURL))
+        if (Utils.isNullOrEmpty(iURL))
             return;
         else if (iURL.startsWith("http://") || iURL.startsWith("https://"))
             mWebView.loadUrl(iURL);
@@ -153,22 +154,6 @@ public class BrowserActivity extends AppCompatActivity {
             return true;
         }
         return false;
-    }
-
-
-    // TODO : UTILS
-    private void showLongToast(final Activity iActivity, final String iToast) {
-        iActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(iActivity, iToast, Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    // TODO : UTILS
-    private boolean isNullOrEmpty(String iStr) {
-        return iStr == null || iStr.trim().isEmpty();
     }
 
     public void onClickRefresh(View view) {
