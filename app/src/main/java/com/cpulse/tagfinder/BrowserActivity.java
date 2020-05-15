@@ -17,17 +17,16 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import java.util.List;
-
 public class BrowserActivity extends AppCompatActivity {
 
     private static String TAG = "BROWSER ACTIVITY";
+    private static String HOME_URL = "https://www.google.fr/";
 
-    private WebView mView;
+    private WebView mWebView;
     private SwipeRefreshLayout mSwipe;
+    private EditText mSearchEditText;
 
-    private String mCurrentURL = "https://www.google.com/";
-    private List<String> mURLHistoryList;
+    private String mCurrentURL = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +34,14 @@ public class BrowserActivity extends AppCompatActivity {
         setContentView(R.layout.activity_browser);
 
         initUI();
-
+        init();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        if (mCurrentURL == null)
+            processURLSearch(HOME_URL);
         refreshPage(mCurrentURL);
     }
 
@@ -51,17 +52,24 @@ public class BrowserActivity extends AppCompatActivity {
 
     public boolean onOptionsItemSelected(MenuItem iItem) {
         switch (iItem.getItemId()) {
-            case R.id.action_edit:
-                /* DO EDIT */
+            case R.id.action_go_back:
+                tryToGoBack();
                 return true;
-            case R.id.action_add:
-                /* DO ADD */
+            case R.id.action_go_forward:
+                tryToGoForward();
                 return true;
-            case R.id.action_delete:
-                /* DO DELETE */
+            case R.id.action_scan:
+                /* DO SCAN */
                 return true;
         }
         return super.onOptionsItemSelected(iItem);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (tryToGoBack())
+            return;
+        super.onBackPressed();
     }
 
     private void initUI() {
@@ -70,8 +78,8 @@ public class BrowserActivity extends AppCompatActivity {
         getSupportActionBar().setCustomView(R.layout.browser_action_bar);
 
         View lActionBarView = getSupportActionBar().getCustomView();
-        EditText lEditText = lActionBarView.findViewById(R.id.edit_text_search);
-        lEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        mSearchEditText = lActionBarView.findViewById(R.id.edit_text_search);
+        mSearchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView iTextView, int iActionId, KeyEvent iEvent) {
                 boolean oHandled = false;
@@ -83,7 +91,23 @@ public class BrowserActivity extends AppCompatActivity {
             }
         });
 
-        mView = findViewById(R.id.web_view);
+        mWebView = findViewById(R.id.web_view);
+        mWebView.setWebViewClient(new WebViewClient() {
+
+            @Override
+            public void doUpdateVisitedHistory(WebView iView, String iUrl, boolean iIsReload) {
+                super.doUpdateVisitedHistory(iView, iUrl, iIsReload);
+                if (!iIsReload) {
+                    mSearchEditText.setText(iUrl);
+                    showLongToast(BrowserActivity.this, iUrl);
+                }
+            }
+
+            public void onPageFinished(WebView view, String url) {
+                mSwipe.setRefreshing(false);
+            }
+
+        });
 
         mSwipe = findViewById(R.id.swipe);
         mSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -94,19 +118,15 @@ public class BrowserActivity extends AppCompatActivity {
         });
     }
 
+    private void init() {
+    }
+
     private void refreshPage(String iURL) {
-        mView.getSettings().setJavaScriptEnabled(true);
-        mView.getSettings().setAppCacheEnabled(true);
-        mView.loadUrl(iURL);
+        mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.getSettings().setAppCacheEnabled(true);
+        mWebView.loadUrl(iURL);
         mSwipe.setRefreshing(true);
-        mView.setWebViewClient(new WebViewClient() {
 
-            public void onPageFinished(WebView view, String url) {
-                // do your stuff here
-                mSwipe.setRefreshing(false);
-            }
-
-        });
     }
 
     private void processURLSearch(String iURL) {
@@ -117,6 +137,25 @@ public class BrowserActivity extends AppCompatActivity {
         else
             refreshPage("http://" + iURL);
     }
+
+    private boolean tryToGoBack() {
+        if (mWebView.canGoBack()) {
+            mWebView.goBack();
+            // TODO : Update edit text
+            return true;
+        }
+        return false;
+    }
+
+    private boolean tryToGoForward() {
+        if (mWebView.canGoForward()) {
+            mWebView.goForward();
+// TODO : Update edit text
+            return true;
+        }
+        return false;
+    }
+
 
     // TODO : UTILS
     private void showLongToast(final Activity iActivity, final String iToast) {
