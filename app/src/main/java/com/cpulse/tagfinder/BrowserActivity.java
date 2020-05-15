@@ -1,6 +1,7 @@
 package com.cpulse.tagfinder;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -26,8 +27,6 @@ public class BrowserActivity extends AppCompatActivity {
     private SwipeRefreshLayout mSwipe;
     private EditText mSearchEditText;
 
-    private String mCurrentURL = null;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,9 +39,8 @@ public class BrowserActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (mCurrentURL == null)
+        if (isNullOrEmpty(mWebView.getUrl()))
             processURLSearch(HOME_URL);
-        refreshPage(mCurrentURL);
     }
 
     public boolean onCreateOptionsMenu(Menu iMenu) {
@@ -92,6 +90,8 @@ public class BrowserActivity extends AppCompatActivity {
         });
 
         mWebView = findViewById(R.id.web_view);
+        mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.getSettings().setAppCacheEnabled(true);
         mWebView.setWebViewClient(new WebViewClient() {
 
             @Override
@@ -103,8 +103,15 @@ public class BrowserActivity extends AppCompatActivity {
                 }
             }
 
-            public void onPageFinished(WebView view, String url) {
+            @Override
+            public void onPageStarted(WebView iView, String url, Bitmap iFavIcon) {
+                mSwipe.setRefreshing(true);
+                super.onPageStarted(iView, url, iFavIcon);
+            }
+
+            public void onPageFinished(WebView iView, String iUrl) {
                 mSwipe.setRefreshing(false);
+                super.onPageFinished(iView, iUrl);
             }
 
         });
@@ -113,7 +120,7 @@ public class BrowserActivity extends AppCompatActivity {
         mSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                refreshPage(mCurrentURL);
+                mWebView.reload();
             }
         });
     }
@@ -121,21 +128,13 @@ public class BrowserActivity extends AppCompatActivity {
     private void init() {
     }
 
-    private void refreshPage(String iURL) {
-        mWebView.getSettings().setJavaScriptEnabled(true);
-        mWebView.getSettings().setAppCacheEnabled(true);
-        mWebView.loadUrl(iURL);
-        mSwipe.setRefreshing(true);
-
-    }
-
     private void processURLSearch(String iURL) {
         if (isNullOrEmpty(iURL))
             return;
         else if (iURL.startsWith("http://") || iURL.startsWith("https://"))
-            refreshPage(iURL);
+            mWebView.loadUrl(iURL);
         else
-            refreshPage("http://" + iURL);
+            mWebView.loadUrl("http://" + iURL);
     }
 
     private boolean tryToGoBack() {
@@ -170,5 +169,9 @@ public class BrowserActivity extends AppCompatActivity {
     // TODO : UTILS
     private boolean isNullOrEmpty(String iStr) {
         return iStr == null || iStr.trim().isEmpty();
+    }
+
+    public void onClickRefresh(View view) {
+        mWebView.reload();
     }
 }
