@@ -39,6 +39,14 @@ public class Utils {
         });
     }
 
+    public static void showToast(final Activity iActivity, final String iToast) {
+        iActivity.runOnUiThread(new Runnable() {
+            public void run() {
+                Toast.makeText(iActivity, iToast, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     public static boolean isNullOrEmpty(String iStr) {
         return iStr == null || iStr.trim().isEmpty();
     }
