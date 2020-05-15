@@ -17,6 +17,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import java.util.List;
+
 public class BrowserActivity extends AppCompatActivity {
 
     private static String TAG = "BROWSER ACTIVITY";
@@ -25,44 +27,14 @@ public class BrowserActivity extends AppCompatActivity {
     private SwipeRefreshLayout mSwipe;
 
     private String mCurrentURL = "https://www.google.com/";
-
-    public static boolean isNullOrEmpty(String iStr) {
-        return iStr == null || iStr.trim().isEmpty();
-    }
+    private List<String> mURLHistoryList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browser);
 
-        // UI init
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setDisplayShowCustomEnabled(true);
-        getSupportActionBar().setCustomView(R.layout.browser_action_bar);
-
-        View lActionBarView = getSupportActionBar().getCustomView();
-        EditText editText = lActionBarView.findViewById(R.id.edit_text_search);
-        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                boolean handled = false;
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    processURLSearch(v.getText().toString());
-                    handled = true;
-                }
-                return handled;
-            }
-        });
-
-        mView = findViewById(R.id.web_view);
-
-        mSwipe = findViewById(R.id.swipe);
-        mSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                refreshPage(mCurrentURL);
-            }
-        });
+        initUI();
 
     }
 
@@ -70,31 +42,6 @@ public class BrowserActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         refreshPage(mCurrentURL);
-    }
-
-    public void refreshPage(String iURL) {
-
-        mView.getSettings().setJavaScriptEnabled(true);
-        mView.getSettings().setAppCacheEnabled(true);
-        mView.loadUrl(iURL);
-        mSwipe.setRefreshing(true);
-        mView.setWebViewClient(new WebViewClient() {
-
-            public void onPageFinished(WebView view, String url) {
-                // do your stuff here
-                mSwipe.setRefreshing(false);
-            }
-
-        });
-    }
-
-    public void processURLSearch(String iURL) {
-        if (isNullOrEmpty(iURL))
-            return;
-        else if (iURL.startsWith("http://") || iURL.startsWith("https://"))
-            refreshPage(iURL);
-        else
-            refreshPage("http://" + iURL);
     }
 
     public boolean onCreateOptionsMenu(Menu iMenu) {
@@ -117,12 +64,62 @@ public class BrowserActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(iItem);
     }
 
-    public void onClickRefresh(View iView) {
-        refreshPage(mCurrentURL);
+    private void initUI() {
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setCustomView(R.layout.browser_action_bar);
+
+        View lActionBarView = getSupportActionBar().getCustomView();
+        EditText lEditText = lActionBarView.findViewById(R.id.edit_text_search);
+        lEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView iTextView, int iActionId, KeyEvent iEvent) {
+                boolean oHandled = false;
+                if (iActionId == EditorInfo.IME_ACTION_SEARCH) {
+                    processURLSearch(iTextView.getText().toString());
+                    oHandled = true;
+                }
+                return oHandled;
+            }
+        });
+
+        mView = findViewById(R.id.web_view);
+
+        mSwipe = findViewById(R.id.swipe);
+        mSwipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshPage(mCurrentURL);
+            }
+        });
+    }
+
+    private void refreshPage(String iURL) {
+        mView.getSettings().setJavaScriptEnabled(true);
+        mView.getSettings().setAppCacheEnabled(true);
+        mView.loadUrl(iURL);
+        mSwipe.setRefreshing(true);
+        mView.setWebViewClient(new WebViewClient() {
+
+            public void onPageFinished(WebView view, String url) {
+                // do your stuff here
+                mSwipe.setRefreshing(false);
+            }
+
+        });
+    }
+
+    private void processURLSearch(String iURL) {
+        if (isNullOrEmpty(iURL))
+            return;
+        else if (iURL.startsWith("http://") || iURL.startsWith("https://"))
+            refreshPage(iURL);
+        else
+            refreshPage("http://" + iURL);
     }
 
     // TODO : UTILS
-    public void showLongToast(final Activity iActivity, final String iToast) {
+    private void showLongToast(final Activity iActivity, final String iToast) {
         iActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -131,5 +128,8 @@ public class BrowserActivity extends AppCompatActivity {
         });
     }
 
-
+    // TODO : UTILS
+    private boolean isNullOrEmpty(String iStr) {
+        return iStr == null || iStr.trim().isEmpty();
+    }
 }
