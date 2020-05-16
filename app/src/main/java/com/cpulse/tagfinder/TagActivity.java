@@ -1,5 +1,6 @@
 package com.cpulse.tagfinder;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cpulse.tagfinder.adapters.TagAdapter;
+import com.cpulse.tagfinder.core.Utils;
 
 public class TagActivity extends AppCompatActivity {
 
@@ -29,7 +31,10 @@ public class TagActivity extends AppCompatActivity {
         Bundle lBundle = getIntent().getExtras();
         if (lBundle != null)
             mTags = lBundle.getStringArray(KEY_TAG_LIST);
-
+        if (mTags == null || mTags.length < 1) {
+            Utils.showLongToast(this, "An error occurred...");
+            return;
+        }
         initUI();
     }
 
@@ -58,9 +63,14 @@ public class TagActivity extends AppCompatActivity {
         mTagAdapter.setOnClickListener(new TagAdapter.OnItemClicked() {
             @Override
             public void onItemClicked(int iPosition) {
-                // TODO : Item clicked
+                startArticleActivity(iPosition);
             }
         });
     }
 
+    private void startArticleActivity(int iTagIndex) {
+        Intent myIntent = new Intent(TagActivity.this, ArticleActivity.class);
+        myIntent.putExtra(ArticleActivity.KEY_API_QUERY, mTags[iTagIndex]);
+        startActivity(myIntent);
+    }
 }
