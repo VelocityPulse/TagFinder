@@ -21,7 +21,7 @@ import com.cpulse.tagfinder.core.Utils;
 
 /*
     Hours : Friday : 3pm to 7pm (4h)
-            Saturday : 4pm to
+            Saturday : 4pm to 8:30pm (4h30)
  */
 
 public class BrowserActivity extends AppCompatActivity {
