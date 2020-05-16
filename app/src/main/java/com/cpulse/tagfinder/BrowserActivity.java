@@ -19,18 +19,15 @@ import com.cpulse.tagfinder.core.LogManager;
 import com.cpulse.tagfinder.core.Utils;
 
 /*
-
     Hours : Friday : 3pm to 7pm (4h)
             Saturday : 4pm to
-
  */
 
 public class BrowserActivity extends AppCompatActivity {
 
     private static String TAG = "BROWSER ACTIVITY";
-    //    private static String HOME_URL = "https://www.google.fr/";
     private static String HOME_URL = "https://migrationology.com/south-korean-food-dishes/";
-
+    //    private static String HOME_URL = "https://www.google.fr/";
 
     private WebView mWebView;
     private SwipeRefreshLayout mSwipe;
@@ -153,6 +150,9 @@ public class BrowserActivity extends AppCompatActivity {
         String[] lArticles = MetaParser.getArticlesTag(lHTML);
         for (String lItem : lArticles) {
             LogManager.error(TAG, lItem);
+        }
+        if (lArticles.length < 1) {
+            Utils.showToast(this, "No articles found");
         }
     }
 
