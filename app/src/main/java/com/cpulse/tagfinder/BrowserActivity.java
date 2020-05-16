@@ -153,13 +153,13 @@ public class BrowserActivity extends AppCompatActivity {
         if (lTags.length < 1) {
             Utils.showToast(this, "No articles found");
         } else {
-            startTopicActivity(lTags);
+            startTagActivity(lTags);
         }
     }
 
-    private void startTopicActivity(String[] iTags) {
+    private void startTagActivity(String[] iTags) {
         Intent myIntent = new Intent(BrowserActivity.this, TagActivity.class);
-        myIntent.putExtra(TagActivity.KEY_TOPIC_LIST, iTags);
+        myIntent.putExtra(TagActivity.KEY_TAG_LIST, iTags);
         startActivity(myIntent);
     }
 

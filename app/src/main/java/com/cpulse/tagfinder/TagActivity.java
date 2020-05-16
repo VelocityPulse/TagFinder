@@ -10,16 +10,16 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.cpulse.tagfinder.adapters.TopicAdapter;
+import com.cpulse.tagfinder.adapters.TagAdapter;
 
 public class TagActivity extends AppCompatActivity {
 
-    public static String KEY_TOPIC_LIST = "KEY_TOPIC_LIST";
+    public static String KEY_TAG_LIST = "KEY_TAG_LIST";
 
-    private static String TAG = "TOPIC ACTIVITY";
+    private static String TAG = "TAG ACTIVITY";
 
-    private String[] mTopics;
-    private TopicAdapter mTopicAdapter;
+    private String[] mTags;
+    private TagAdapter mTagAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -28,7 +28,7 @@ public class TagActivity extends AppCompatActivity {
 
         Bundle lBundle = getIntent().getExtras();
         if (lBundle != null)
-            mTopics = lBundle.getStringArray(KEY_TOPIC_LIST);
+            mTags = lBundle.getStringArray(KEY_TAG_LIST);
 
         initUI();
     }
@@ -48,14 +48,14 @@ public class TagActivity extends AppCompatActivity {
     }
 
     private void initUI() {
-        setSupportActionBar((Toolbar) findViewById(R.id.activity_topic_toolbar));
+        setSupportActionBar((Toolbar) findViewById(R.id.activity_tag_toolbar));
 
-        RecyclerView lRecyclerView = findViewById(R.id.topic_recycler_view);
+        RecyclerView lRecyclerView = findViewById(R.id.tag_recycler_view);
         lRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mTopicAdapter = new TopicAdapter(mTopics);
-        lRecyclerView.setAdapter(mTopicAdapter);
+        mTagAdapter = new TagAdapter(mTags);
+        lRecyclerView.setAdapter(mTagAdapter);
 
-        mTopicAdapter.setOnClickListener(new TopicAdapter.OnItemClicked() {
+        mTagAdapter.setOnClickListener(new TagAdapter.OnItemClicked() {
             @Override
             public void onItemClicked(int iPosition) {
                 // TODO : Item clicked

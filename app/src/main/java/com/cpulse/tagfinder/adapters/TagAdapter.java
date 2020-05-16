@@ -11,34 +11,34 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.cpulse.tagfinder.R;
 
-public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.CustomItemViewAdapter> {
+public class TagAdapter extends RecyclerView.Adapter<TagAdapter.CustomItemViewAdapter> {
 
-    private String[] mTopics;
+    private String[] mTags;
     private OnItemClicked mOnClickListener;
 
-    public TopicAdapter(String[] iTopics) {
-        mTopics = iTopics;
+    public TagAdapter(String[] iTags) {
+        mTags = iTags;
     }
 
     @NonNull
     @Override
-    public TopicAdapter.CustomItemViewAdapter onCreateViewHolder(@NonNull ViewGroup iViewGroup, int iViewType) {
+    public TagAdapter.CustomItemViewAdapter onCreateViewHolder(@NonNull ViewGroup iViewGroup, int iViewType) {
         LinearLayout lLayout = (LinearLayout) LayoutInflater.from(iViewGroup.getContext()).inflate(
                 R.layout.list_item_tag, iViewGroup, false);
 
         return new CustomItemViewAdapter(lLayout,
-                (TextView) lLayout.findViewById(R.id.list_item_topic_primary_text));
+                (TextView) lLayout.findViewById(R.id.list_item_tag_primary_text));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull TopicAdapter.CustomItemViewAdapter iHolder, final int iPosition) {
-        String lTopic = mTopics[iPosition];
+    public void onBindViewHolder(@NonNull TagAdapter.CustomItemViewAdapter iHolder, final int iPosition) {
+        String lTags = mTags[iPosition];
 
         // Trim + Upper first letter
-        lTopic = lTopic.trim();
-        lTopic = lTopic.substring(0, 1).toUpperCase() + lTopic.substring(1);
+        lTags = lTags.trim();
+        lTags = lTags.substring(0, 1).toUpperCase() + lTags.substring(1);
 
-        iHolder.mPrimaryText.setText(lTopic);
+        iHolder.mPrimaryText.setText(lTags);
         iHolder.mMainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -50,7 +50,7 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.CustomItemVi
 
     @Override
     public int getItemCount() {
-        return mTopics.length;
+        return mTags.length;
     }
 
     public void setOnClickListener(OnItemClicked iOnClickListener) {
