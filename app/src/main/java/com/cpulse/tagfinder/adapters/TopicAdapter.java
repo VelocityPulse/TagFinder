@@ -24,7 +24,7 @@ public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.CustomItemVi
     @Override
     public TopicAdapter.CustomItemViewAdapter onCreateViewHolder(@NonNull ViewGroup iViewGroup, int iViewType) {
         LinearLayout lLayout = (LinearLayout) LayoutInflater.from(iViewGroup.getContext()).inflate(
-                R.layout.list_item_topic, iViewGroup, false);
+                R.layout.list_item_tag, iViewGroup, false);
 
         return new CustomItemViewAdapter(lLayout,
                 (TextView) lLayout.findViewById(R.id.list_item_topic_primary_text));

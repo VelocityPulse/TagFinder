@@ -12,7 +12,6 @@ import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -81,9 +80,6 @@ public class BrowserActivity extends AppCompatActivity {
 
     private void initUI() {
         setSupportActionBar((Toolbar) findViewById(R.id.activity_browser_toolbar));
-//        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-//        getSupportActionBar().setDisplayShowCustomEnabled(true);
-//        getSupportActionBar().setCustomView(R.layout.action_bar_browser);
 
         mSearchEditText = findViewById(R.id.edit_text_search);
         mSearchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -162,8 +158,8 @@ public class BrowserActivity extends AppCompatActivity {
     }
 
     private void startTopicActivity(String[] iTags) {
-        Intent myIntent = new Intent(BrowserActivity.this, TopicActivity.class);
-        myIntent.putExtra(TopicActivity.KEY_TOPIC_LIST, iTags);
+        Intent myIntent = new Intent(BrowserActivity.this, TagActivity.class);
+        myIntent.putExtra(TagActivity.KEY_TOPIC_LIST, iTags);
         startActivity(myIntent);
     }
 
