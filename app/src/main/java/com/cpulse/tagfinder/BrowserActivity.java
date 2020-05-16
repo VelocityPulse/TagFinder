@@ -1,5 +1,6 @@
 package com.cpulse.tagfinder;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.cpulse.tagfinder.core.LogManager;
@@ -55,6 +57,8 @@ public class BrowserActivity extends AppCompatActivity {
 
     public boolean onOptionsItemSelected(MenuItem iItem) {
         switch (iItem.getItemId()) {
+            case android.R.id.home:
+                mWebView.reload();
             case R.id.action_go_back:
                 tryToGoBack();
                 return true;
@@ -75,14 +79,13 @@ public class BrowserActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-
     private void initUI() {
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setDisplayShowCustomEnabled(true);
-        getSupportActionBar().setCustomView(R.layout.browser_action_bar);
+        setSupportActionBar((Toolbar) findViewById(R.id.activity_browser_toolbar));
+//        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+//        getSupportActionBar().setDisplayShowCustomEnabled(true);
+//        getSupportActionBar().setCustomView(R.layout.action_bar_browser);
 
-        View lActionBarView = getSupportActionBar().getCustomView();
-        mSearchEditText = lActionBarView.findViewById(R.id.edit_text_search);
+        mSearchEditText = findViewById(R.id.edit_text_search);
         mSearchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView iTextView, int iActionId, KeyEvent iEvent) {
@@ -147,13 +150,21 @@ public class BrowserActivity extends AppCompatActivity {
 
         String lHTML = ((TagFinderWebViewClient) mWebView.getWebViewClient()).getHTML();
 
-        String[] lArticles = MetaParser.getArticlesTag(lHTML);
-        for (String lItem : lArticles) {
+        String[] lTags = MetaParser.getArticlesTag(lHTML);
+        for (String lItem : lTags) {
             LogManager.error(TAG, lItem);
         }
-        if (lArticles.length < 1) {
+        if (lTags.length < 1) {
             Utils.showToast(this, "No articles found");
+        } else {
+            startTopicActivity(lTags);
         }
+    }
+
+    private void startTopicActivity(String[] iTags) {
+        Intent myIntent = new Intent(BrowserActivity.this, TopicActivity.class);
+        myIntent.putExtra(TopicActivity.KEY_TOPIC_LIST, iTags);
+        startActivity(myIntent);
     }
 
     private boolean tryToGoBack() {

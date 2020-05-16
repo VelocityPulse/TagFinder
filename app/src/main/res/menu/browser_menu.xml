@@ -14,7 +14,6 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:enabled="false"
         android:id="@+id/action_scan"
         android:icon="@drawable/ic_wb_incandescent"
         android:title="Scan tags"

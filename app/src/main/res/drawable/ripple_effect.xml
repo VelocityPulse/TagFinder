@@ -4,7 +4,7 @@
 
     <!-- for Button -->
     <item>
-        <shape android:shape="oval">
+        <shape android:shape="rectangle">
             <solid android:color="@color/colorBackground" />
         </shape>
     </item>

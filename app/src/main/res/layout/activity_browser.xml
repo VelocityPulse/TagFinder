@@ -1,10 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".BrowserActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:elevation="5dp"
+        android:id="@+id/activity_browser_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:contentInsetEnd="0dp"
+        app:contentInsetLeft="0dp"
+        app:contentInsetRight="0dp"
+        app:contentInsetStart="0dp">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/ripple_effect"
+            android:backgroundTint="@color/colorPrimary"
+            android:iconTint="@color/colorIcons"
+            android:onClick="onClickRefresh"
+            android:paddingRight="9dp"
+            android:paddingLeft="9dp"
+            android:src="@drawable/ic_refresh" />
+
+        <EditText
+            android:id="@+id/edit_text_search"
+            android:layout_width="match_parent"
+            android:layout_height="34dp"
+            android:background="@drawable/rounded_corner"
+            android:hint="Search"
+            android:imeOptions="actionSearch"
+            android:inputType="textUri"
+            android:maxLines="1"
+            android:paddingLeft="2dp"
+            android:textCursorDrawable="@null" />
+
+    </androidx.appcompat.widget.Toolbar>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe"

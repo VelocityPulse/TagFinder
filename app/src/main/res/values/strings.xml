@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">TagFinder</string>
     <string name="title_activity_browser">Browser</string>
+    <string name="title_activity_topic">Topics</string>
 </resources>
