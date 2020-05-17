@@ -21,14 +21,14 @@
             android:id="@+id/article_item_loading_logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true" />Z
+            android:layout_centerInParent="true" />
 
         <ImageView
             android:id="@+id/article_item_image"
             android:layout_width="100dp"
             android:layout_height="56dp"
             android:layout_centerVertical="true"
-            android:contentDescription="Article image"
+            android:contentDescription="@string/article_image"
             android:visibility="invisible" />
 
 
@@ -48,7 +48,7 @@
             android:maxLines="1"
             android:ellipsize="end"
             android:gravity="bottom"
-            android:text="Debug"
+            android:text="@string/primary_text"
             android:textColor="@android:color/black"
             android:textSize="18dp" />
 
@@ -58,7 +58,7 @@
             android:layout_height="match_parent"
             android:ellipsize="end"
             android:maxLines="3"
-            android:text="Debug Debug Debug Debug Debug Debug Debug Debug Debug Debug Debug Debug Debug Debug Debug Debug Debug Debug Debug Debug Debug Debug Debug Debug Debug Debug Debug Debug Debug Debug Debug Debug Debug Debug " />
+            android:text="@string/secondary_text" />
 
     </LinearLayout>
 

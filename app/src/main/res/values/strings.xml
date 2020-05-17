@@ -3,4 +3,11 @@
     <string name="title_activity_browser">Browser</string>
     <string name="title_activity_topic">Topics</string>
     <string name="title_activity_article">Articles</string>
+    <string name="primary_text">Primary Text</string>
+    <string name="secondary_text">Secondary Text</string>
+    <string name="article_image">Article image</string>
+    <string name="home_button">Home button</string>
+    <string name="refresh_button">Refresh button</string>
+    <string name="search_zone">Search</string>
+    <string name="topic_item">Topic item</string>
 </resources>

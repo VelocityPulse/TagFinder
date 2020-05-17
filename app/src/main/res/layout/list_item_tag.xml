@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:textColor="@android:color/black"
-        android:text="debug"
+        android:text="@string/topic_item"
         android:textSize="18dp" />
 
 </LinearLayout>
