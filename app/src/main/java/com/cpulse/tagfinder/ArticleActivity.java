@@ -10,8 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cpulse.tagfinder.adapters.ArticleAdapter;
 import com.cpulse.tagfinder.core.Utils;
 import com.cpulse.tagfinder.newsapi.ArticleObject;
-
-import java.util.ArrayList;
+import com.cpulse.tagfinder.newsapi.NewsAPIRequest;
 
 public class ArticleActivity extends AppCompatActivity {
 
@@ -34,13 +33,35 @@ public class ArticleActivity extends AppCompatActivity {
             return;
         }
 
+        NewsAPIRequest lRequest = new NewsAPIRequest();
+        lRequest.requestForArticleAndBlog("test", new NewsAPIRequest.OnRequestResult() {
+            @Override
+            public void onRequestResult(final ArticleObject[] iArticleObjects) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mArticleAdapter.setArticleObjectList(iArticleObjects);
+                    }
+                });
+            }
+
+            @Override
+            public void onRequestError() {
+
+            }
+
+            @Override
+            public void onInternetMissing() {
+
+            }
+        });
         initializeGUI();
     }
 
     private void initializeGUI() {
         RecyclerView lRecyclerView = findViewById(R.id.article_recycler_view);
         lRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mArticleAdapter = new ArticleAdapter(new ArrayList<ArticleObject>());
+        mArticleAdapter = new ArticleAdapter(new ArticleObject[0]);
         lRecyclerView.setAdapter(mArticleAdapter);
     }
 }

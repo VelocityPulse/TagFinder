@@ -17,10 +17,10 @@ import java.util.List;
 
 public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.CustomItemViewAdapter> {
 
-    private List<ArticleObject> mArticleObjectList;
+    private ArticleObject[] mArticleObjects;
 
-    public ArticleAdapter(List<ArticleObject> iArticleObjectList) {
-        mArticleObjectList = iArticleObjectList;
+    public ArticleAdapter(ArticleObject[] iArticleObjects) {
+        mArticleObjects = iArticleObjects;
     }
 
     @NonNull
@@ -37,16 +37,20 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.CustomIt
 
     @Override
     public void onBindViewHolder(@NonNull CustomItemViewAdapter iHolder, int iPosition) {
-//        ArticleObject lArticleObject = mArticleObjectList.get(iPosition);
+        ArticleObject lArticleObject = mArticleObjects[iPosition];
 
-        iHolder.mPrimaryText.setText("Test");
-        iHolder.mSecondaryText.setText("Debug debug debug debug debug debug debug debug debug debug debug debug debug debug debug debug debug debug debug debug debug debug debug debug debug debug");
+        iHolder.mPrimaryText.setText(lArticleObject.getTitle());
+        iHolder.mSecondaryText.setText(lArticleObject.getDescription());
     }
 
     @Override
     public int getItemCount() {
-//        return mArticleObjectList.size();
-        return 10;
+        return mArticleObjects.length;
+    }
+
+    public void setArticleObjectList(ArticleObject[] iArticleObjects) {
+        mArticleObjects = iArticleObjects;
+        notifyDataSetChanged();
     }
 
     public static class CustomItemViewAdapter extends RecyclerView.ViewHolder {
