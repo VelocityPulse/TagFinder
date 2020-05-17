@@ -8,8 +8,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,6 +34,7 @@ public class BrowserActivity extends AppCompatActivity {
     //    private static String HOME_URL = "https://www.google.fr/";
 
     private WebView mWebView;
+    private ProgressBar mProgressBar;
     private SwipeRefreshLayout mSwipe;
     private EditText mSearchEditText;
 
@@ -40,7 +43,7 @@ public class BrowserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browser);
 
-        initUI();
+        initializeGUI();
     }
 
     @Override
@@ -79,9 +82,12 @@ public class BrowserActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    private void initUI() {
+    private void initializeGUI() {
         setSupportActionBar((Toolbar) findViewById(R.id.activity_browser_toolbar));
 
+        mProgressBar = findViewById(R.id.browser_progressbar);
+        mProgressBar.setMin(0);
+        mProgressBar.setMax(100);
         mSearchEditText = findViewById(R.id.edit_text_search);
         mSearchEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -110,6 +116,7 @@ public class BrowserActivity extends AppCompatActivity {
 
             @Override
             public void onPageStarted(WebView iView, String url, Bitmap iFavIcon) {
+                mProgressBar.setProgress(0);
                 mSwipe.setRefreshing(true);
                 super.onPageStarted(iView, url, iFavIcon);
             }
@@ -118,7 +125,15 @@ public class BrowserActivity extends AppCompatActivity {
                 mSwipe.setRefreshing(false);
                 super.onPageFinished(iView, iUrl);
             }
+        });
 
+        mWebView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onProgressChanged(WebView iView, int iNewProgress) {
+                LogManager.info(TAG, "PROGRESS : " + iNewProgress);
+                super.onProgressChanged(iView, iNewProgress);
+                mProgressBar.setProgress(iNewProgress);
+            }
         });
 
         mSwipe = findViewById(R.id.swipe);

@@ -8,11 +8,11 @@
     tools:context=".BrowserActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:elevation="5dp"
         android:id="@+id/activity_browser_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:background="@color/colorPrimary"
+        android:elevation="5dp"
         android:gravity="center"
         android:orientation="horizontal"
         app:contentInsetEnd="0dp"
@@ -25,12 +25,12 @@
             android:layout_height="match_parent"
             android:background="@drawable/ripple_effect"
             android:backgroundTint="@color/colorPrimary"
+            android:contentDescription="@string/refresh_button"
             android:iconTint="@color/colorIcons"
             android:onClick="onClickRefresh"
-            android:paddingRight="9dp"
             android:paddingLeft="9dp"
-            android:src="@drawable/ic_refresh"
-            android:contentDescription="@string/refresh_button" />
+            android:paddingRight="9dp"
+            android:src="@drawable/ic_refresh" />
 
         <EditText
             android:id="@+id/edit_text_search"
@@ -45,6 +45,14 @@
             android:textCursorDrawable="@null" />
 
     </androidx.appcompat.widget.Toolbar>
+
+    <ProgressBar
+        android:id="@+id/browser_progressbar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:indeterminate="false"
+        android:scaleY="2" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe"
