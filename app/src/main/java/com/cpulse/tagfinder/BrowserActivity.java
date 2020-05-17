@@ -26,8 +26,8 @@ import com.cpulse.tagfinder.core.Utils;
             Friday : 3pm to 7pm (4h)
             Saturday : 4pm to 8:30pm (4h30)
             Sunday : 4pm to 10pm (6h) (-1h eating)
-            1h norm & documentation
-            Total 15h
+            10min norm
+            Total 14h
  */
 
 public class BrowserActivity extends AppCompatActivity {
