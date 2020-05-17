@@ -16,6 +16,11 @@
         android:layout_width="120dp"
         android:layout_height="match_parent">
 
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />Z
+
         <ImageView
             android:id="@+id/article_item_image"
             android:layout_width="100dp"
@@ -25,10 +30,7 @@
             android:contentDescription="Article image"
             android:visibility="gone" />
 
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true" />
+
 
     </RelativeLayout>
 
