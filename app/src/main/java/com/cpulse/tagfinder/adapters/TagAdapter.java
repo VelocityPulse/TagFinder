@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cpulse.tagfinder.R;
+import com.cpulse.tagfinder.core.Utils;
 
 public class TagAdapter extends RecyclerView.Adapter<TagAdapter.CustomItemViewAdapter> {
 
@@ -35,8 +36,7 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.CustomItemViewAd
         String lTags = mTags[iPosition];
 
         // Trim + Upper first letter
-        lTags = lTags.trim();
-        lTags = lTags.substring(0, 1).toUpperCase() + lTags.substring(1);
+        lTags = Utils.upperFirstChar(lTags);
 
         iHolder.mPrimaryText.setText(lTags);
         iHolder.mMainLayout.setOnClickListener(new View.OnClickListener() {

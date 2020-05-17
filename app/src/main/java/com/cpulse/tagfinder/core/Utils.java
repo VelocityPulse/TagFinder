@@ -12,6 +12,13 @@ import com.cpulse.tagfinder.R;
 
 public class Utils {
 
+    public static String upperFirstChar(String iStr) {
+        iStr = iStr.trim();
+        iStr = iStr.substring(0, 1).toUpperCase() + iStr.substring(1);
+
+        return iStr;
+    }
+
     public static void hideKeyboard(Activity iActivity) {
         InputMethodManager lImm = (InputMethodManager) iActivity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         //Find the currently focused view, so we can grab the correct window token from it.

@@ -23,8 +23,8 @@ public class ImageDownloaderAsyncTask extends AsyncTask<String, Void, Bitmap> {
     }
 
     @Override
-    protected Bitmap doInBackground(String... params) {
-        return downloadBitmap(params[0]);
+    protected Bitmap doInBackground(String... iParams) {
+        return downloadBitmap(iParams[0]);
     }
 
     @Override
@@ -32,7 +32,6 @@ public class ImageDownloaderAsyncTask extends AsyncTask<String, Void, Bitmap> {
         if (isCancelled() || iBitmap == null) {
             return;
         }
-
 
         if (mOnAsyncTaskListener != null)
             mOnAsyncTaskListener.onSuccessDownload(iBitmap);

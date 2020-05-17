@@ -58,7 +58,7 @@ public class ArticleActivity extends AppCompatActivity {
 
     private void initializeGUI() {
         mProgressBar = findViewById(R.id.article_loading_logo);
-        ((TextView) findViewById(R.id.article_title)).setText(mAPIQuery);
+        ((TextView) findViewById(R.id.article_title)).setText(Utils.upperFirstChar(mAPIQuery));
 
         mRecyclerView = findViewById(R.id.article_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
