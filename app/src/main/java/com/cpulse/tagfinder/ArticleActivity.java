@@ -4,9 +4,14 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.cpulse.tagfinder.adapters.ArticleAdapter;
 import com.cpulse.tagfinder.core.Utils;
+import com.cpulse.tagfinder.newsapi.ArticleObject;
+
+import java.util.ArrayList;
 
 public class ArticleActivity extends AppCompatActivity {
 
@@ -19,6 +24,7 @@ public class ArticleActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_article);
 
         Bundle lBundle = getIntent().getExtras();
         if (lBundle != null)
@@ -32,8 +38,9 @@ public class ArticleActivity extends AppCompatActivity {
     }
 
     private void initializeGUI() {
-
+        RecyclerView lRecyclerView = findViewById(R.id.article_recycler_view);
+        lRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mArticleAdapter = new ArticleAdapter(new ArrayList<ArticleObject>());
+        lRecyclerView.setAdapter(mArticleAdapter);
     }
-
-
 }
