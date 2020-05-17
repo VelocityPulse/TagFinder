@@ -25,8 +25,8 @@ public class TagActivity extends AppCompatActivity {
     private TagAdapter mTagAdapter;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onCreate(@Nullable Bundle iSavedInstanceState) {
+        super.onCreate(iSavedInstanceState);
         setContentView(R.layout.activity_tag);
 
         Bundle lBundle = getIntent().getExtras();
@@ -36,11 +36,10 @@ public class TagActivity extends AppCompatActivity {
             Utils.showLongToast(this, "An error occurred...");
             return;
         }
-        initUI();
+        initializeGUI();
     }
 
     public boolean onCreateOptionsMenu(Menu iMenu) {
-//        getMenuInflater().inflate(R.menu.topic_menu, iMenu);
         return super.onCreateOptionsMenu(iMenu);
     }
 
@@ -53,7 +52,7 @@ public class TagActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(iItem);
     }
 
-    private void initUI() {
+    private void initializeGUI() {
         setSupportActionBar((Toolbar) findViewById(R.id.activity_tag_toolbar));
 
         RecyclerView lRecyclerView = findViewById(R.id.tag_recycler_view);
@@ -75,7 +74,7 @@ public class TagActivity extends AppCompatActivity {
         startActivity(myIntent);
     }
 
-    public void onHomeButtonPressed(View view) {
+    public void onHomeButtonPressed(View iView) {
         onBackPressed();
     }
 }

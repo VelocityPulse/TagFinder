@@ -35,13 +35,12 @@ public class TagAdapter extends RecyclerView.Adapter<TagAdapter.CustomItemViewAd
     public void onBindViewHolder(@NonNull TagAdapter.CustomItemViewAdapter iHolder, final int iPosition) {
         String lTags = mTags[iPosition];
 
-        // Trim + Upper first letter
         lTags = Utils.upperFirstChar(lTags);
 
         iHolder.mPrimaryText.setText(lTags);
         iHolder.mMainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View iView) {
                 if (mOnClickListener != null)
                     mOnClickListener.onItemClicked(iPosition);
             }

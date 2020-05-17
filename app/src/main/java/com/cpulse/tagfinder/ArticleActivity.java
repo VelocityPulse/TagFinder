@@ -32,8 +32,8 @@ public class ArticleActivity extends AppCompatActivity {
     private ArticleObject[] mArticleObjects;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onCreate(@Nullable Bundle iSavedInstanceState) {
+        super.onCreate(iSavedInstanceState);
         setContentView(R.layout.activity_article);
 
         Bundle lBundle = getIntent().getExtras();
@@ -119,16 +119,16 @@ public class ArticleActivity extends AppCompatActivity {
         lFadeOut.setDuration(800);
         lFadeOut.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void onAnimationStart(Animation animation) {
+            public void onAnimationStart(Animation iAnimation) {
             }
 
             @Override
-            public void onAnimationEnd(Animation animation) {
+            public void onAnimationEnd(Animation iAnimation) {
                 mProgressBar.setVisibility(View.GONE);
             }
 
             @Override
-            public void onAnimationRepeat(Animation animation) {
+            public void onAnimationRepeat(Animation iAnimation) {
             }
         });
 
@@ -140,7 +140,7 @@ public class ArticleActivity extends AppCompatActivity {
         startActivity(browserIntent);
     }
 
-    public void onHomeButtonPressed(View view) {
+    public void onHomeButtonPressed(View iView) {
         onBackPressed();
     }
 }

@@ -19,8 +19,8 @@ public class TagFinderWebViewClient extends WebViewClient {
     }
 
     @Override
-    public void onPageStarted(WebView view, String url, Bitmap favicon) {
-        super.onPageStarted(view, url, favicon);
+    public void onPageStarted(WebView iWebView, String iUrl, Bitmap iFavicon) {
+        super.onPageStarted(iWebView, iUrl, iFavicon);
     }
 
     public void onPageFinished(WebView iView, String iUrl) {

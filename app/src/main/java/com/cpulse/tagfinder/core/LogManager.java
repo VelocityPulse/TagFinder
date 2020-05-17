@@ -7,7 +7,7 @@ public class LogManager {
     public static final String UNKNOWN_TAG = "UNKNOWN_TAG";
     private static final boolean ENABLED_LOG = true;
     private static final String TAG = "CORE - Log Manager";
-    private static final String TAG_PREFIX = "FTPNEXT LOG : ";
+    private static final String TAG_PREFIX = "TAG FINDER LOG : ";
 
     private static boolean sSilentDebugLog = false;
 

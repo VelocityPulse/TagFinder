@@ -75,12 +75,12 @@ public class NewsAPIRequest {
     private String readStream(InputStream iInputStream) {
         String oOutput = null;
         ByteArrayOutputStream lResult = new ByteArrayOutputStream();
-        byte[] buffer = new byte[1024];
+        byte[] lBuffer = new byte[1024];
         int lLength;
 
         try {
-            while ((lLength = iInputStream.read(buffer)) != -1) {
-                lResult.write(buffer, 0, lLength);
+            while ((lLength = iInputStream.read(lBuffer)) != -1) {
+                lResult.write(lBuffer, 0, lLength);
             }
             oOutput = lResult.toString("UTF-8");
         } catch (UnsupportedEncodingException iE) {
@@ -120,7 +120,6 @@ public class NewsAPIRequest {
         if (mOnRequestResult != null)
             mOnRequestResult.onRequestResult(lArticleObjectList.toArray(new ArticleObject[0]));
     }
-
 
     public interface OnRequestResult {
         void onRequestResult(ArticleObject[] iArticleObjects);

@@ -22,16 +22,18 @@ import com.cpulse.tagfinder.core.LogManager;
 import com.cpulse.tagfinder.core.Utils;
 
 /*
-    Hours : Friday : 3pm to 7pm (4h)
+    Hours : 1h30 Research & Documentation
+            Friday : 3pm to 7pm (4h)
             Saturday : 4pm to 8:30pm (4h30)
-            Sunday : 4pm to
+            Sunday : 4pm to 10pm (6h) (-1h eating)
+            1h norm & documentation
+            Total 15h
  */
 
 public class BrowserActivity extends AppCompatActivity {
 
     private static String TAG = "BROWSER ACTIVITY";
     private static String HOME_URL = "https://migrationology.com/south-korean-food-dishes/";
-    //    private static String HOME_URL = "https://www.google.fr/";
 
     private WebView mWebView;
     private ProgressBar mProgressBar;
@@ -115,10 +117,10 @@ public class BrowserActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onPageStarted(WebView iView, String url, Bitmap iFavIcon) {
+            public void onPageStarted(WebView iWebView, String iUrl, Bitmap iFavicon) {
                 mProgressBar.setProgress(0);
                 mSwipe.setRefreshing(true);
-                super.onPageStarted(iView, url, iFavIcon);
+                super.onPageStarted(iWebView, iUrl, iFavicon);
             }
 
             public void onPageFinished(WebView iView, String iUrl) {
@@ -171,9 +173,9 @@ public class BrowserActivity extends AppCompatActivity {
     }
 
     private void startTagActivity(String[] iTags) {
-        Intent myIntent = new Intent(BrowserActivity.this, TagActivity.class);
-        myIntent.putExtra(TagActivity.KEY_TAG_LIST, iTags);
-        startActivity(myIntent);
+        Intent lIntent = new Intent(BrowserActivity.this, TagActivity.class);
+        lIntent.putExtra(TagActivity.KEY_TAG_LIST, iTags);
+        startActivity(lIntent);
     }
 
     private boolean tryToGoBack() {
@@ -192,7 +194,7 @@ public class BrowserActivity extends AppCompatActivity {
         return false;
     }
 
-    public void onClickRefresh(View view) {
+    public void onClickRefresh(View iView) {
         mWebView.reload();
     }
 }
