@@ -2,6 +2,10 @@ package com.cpulse.tagfinder;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.widget.ProgressBar;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,8 +22,10 @@ public class ArticleActivity extends AppCompatActivity {
     public static String KEY_API_QUERY;
     private static String TAG = "ARTICLE ACTIVITY";
 
+    private RecyclerView mRecyclerView;
     private ArticleAdapter mArticleAdapter;
-    private String mAPIQuery = "";
+    private ProgressBar mProgressBar;
+    private String mAPIQuery;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,6 +40,20 @@ public class ArticleActivity extends AppCompatActivity {
             return;
         }
 
+        initializeGUI();
+        initializeRequestAPI();
+    }
+
+    private void initializeGUI() {
+        mProgressBar = findViewById(R.id.article_loading_logo);
+
+        mRecyclerView = findViewById(R.id.article_recycler_view);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mArticleAdapter = new ArticleAdapter(new ArticleObject[0]);
+        mRecyclerView.setAdapter(mArticleAdapter);
+    }
+
+    private void initializeRequestAPI() {
         NewsAPIRequest lRequest = new NewsAPIRequest();
         lRequest.requestForArticleAndBlog("test", new NewsAPIRequest.OnRequestResult() {
             @Override
@@ -41,29 +61,55 @@ public class ArticleActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        mArticleAdapter.setArticleObjectList(iArticleObjects);
+                        hideLoadingLogo();
+                        showRecyclerView(iArticleObjects);
                     }
                 });
             }
 
             @Override
             public void onRequestError() {
-
+                Utils.showToast(ArticleActivity.this, "An error occurred in the request api");
+                finish();
             }
 
             @Override
             public void onInternetMissing() {
-
+                Utils.showToast(ArticleActivity.this, "Internet is missing");
+                finish();
             }
         });
-        initializeGUI();
     }
 
-    private void initializeGUI() {
-        RecyclerView lRecyclerView = findViewById(R.id.article_recycler_view);
-        lRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mArticleAdapter = new ArticleAdapter(new ArticleObject[0]);
-        lRecyclerView.setAdapter(mArticleAdapter);
+    private void showRecyclerView(ArticleObject[] iArticleObjects) {
+        AlphaAnimation lFadeIn = new AlphaAnimation(0, 1);
+        lFadeIn.setInterpolator(new AccelerateInterpolator());
+        lFadeIn.setDuration(500);
+        lFadeIn.setStartOffset(500);
+        mRecyclerView.startAnimation(lFadeIn);
+        mArticleAdapter.setArticleObjectList(iArticleObjects);
+    }
+
+    private void hideLoadingLogo() {
+        AlphaAnimation lFadeOut = new AlphaAnimation(1, 0);
+        lFadeOut.setInterpolator(new AccelerateInterpolator());
+        lFadeOut.setDuration(800);
+        lFadeOut.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                mProgressBar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+        });
+
+        mProgressBar.startAnimation(lFadeOut);
     }
 
     public void onHomeButtonPressed(View view) {

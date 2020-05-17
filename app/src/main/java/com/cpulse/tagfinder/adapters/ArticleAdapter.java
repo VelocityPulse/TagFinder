@@ -13,8 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.cpulse.tagfinder.R;
 import com.cpulse.tagfinder.newsapi.ArticleObject;
 
-import java.util.List;
-
 public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.CustomItemViewAdapter> {
 
     private ArticleObject[] mArticleObjects;
@@ -36,11 +34,17 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.CustomIt
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CustomItemViewAdapter iHolder, int iPosition) {
+    public void onBindViewHolder(@NonNull final CustomItemViewAdapter iHolder, int iPosition) {
         ArticleObject lArticleObject = mArticleObjects[iPosition];
 
         iHolder.mPrimaryText.setText(lArticleObject.getTitle());
         iHolder.mSecondaryText.setText(lArticleObject.getDescription());
+        iHolder.mMainLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     @Override
