@@ -1,5 +1,7 @@
 package com.cpulse.tagfinder;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
@@ -64,6 +66,13 @@ public class ArticleActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mArticleAdapter = new ArticleAdapter(new ArticleObject[0]);
         mRecyclerView.setAdapter(mArticleAdapter);
+
+        mArticleAdapter.setOnArticleClicked(new ArticleAdapter.OnArticleClicked() {
+            @Override
+            public void onArticleClicked(ArticleObject iArticleObject) {
+                openURL(iArticleObject.getURL());
+            }
+        });
     }
 
     private void initializeRequestAPI() {
@@ -124,6 +133,11 @@ public class ArticleActivity extends AppCompatActivity {
         });
 
         mProgressBar.startAnimation(lFadeOut);
+    }
+
+    private void openURL(String iURL) {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(iURL));
+        startActivity(browserIntent);
     }
 
     public void onHomeButtonPressed(View view) {

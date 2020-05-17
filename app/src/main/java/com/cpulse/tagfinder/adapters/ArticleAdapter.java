@@ -24,6 +24,8 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.CustomIt
 
     private ArticleObject[] mArticleObjects;
 
+    private OnArticleClicked mOnArticleClicked;
+
     public ArticleAdapter(ArticleObject[] iArticleObjects) {
         mArticleObjects = iArticleObjects;
     }
@@ -58,8 +60,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.CustomIt
             lArticleObject.startImageDownload();
             iHolder.mImageView.setVisibility(View.INVISIBLE);
             iHolder.mProgressBar.setVisibility(View.VISIBLE);
-        }
-        else {
+        } else {
             iHolder.mImageView.setVisibility(View.VISIBLE);
             iHolder.mImageView.setImageBitmap(lArticleObject.getBitmap());
         }
@@ -69,6 +70,8 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.CustomIt
         iHolder.mMainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View iV) {
+                if (mOnArticleClicked != null)
+                    mOnArticleClicked.onArticleClicked(lArticleObject);
 
             }
         });
@@ -113,6 +116,14 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.CustomIt
     public void setArticleObjectList(ArticleObject[] iArticleObjects) {
         mArticleObjects = iArticleObjects;
         notifyDataSetChanged();
+    }
+
+    public void setOnArticleClicked(OnArticleClicked iOnArticleClicked) {
+        mOnArticleClicked = iOnArticleClicked;
+    }
+
+    public interface OnArticleClicked {
+        void onArticleClicked(ArticleObject iArticleObject);
     }
 
     public static class CustomItemViewAdapter extends RecyclerView.ViewHolder {
