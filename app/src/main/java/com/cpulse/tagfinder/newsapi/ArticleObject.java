@@ -3,8 +3,11 @@ package com.cpulse.tagfinder.newsapi;
 import android.graphics.Bitmap;
 
 import com.cpulse.tagfinder.ImageDownloaderAsyncTask;
+import com.cpulse.tagfinder.core.LogManager;
 
 public class ArticleObject {
+
+    private static final String TAG = "ARTICLE OBJECT";
 
     private String mTitle;
     private String mDescription;
@@ -30,6 +33,7 @@ public class ArticleObject {
         mBitmapAsyncTask = new ImageDownloaderAsyncTask(new ImageDownloaderAsyncTask.OnAsyncTaskListener() {
             @Override
             public void onSuccessDownload(Bitmap iBitmap) {
+                LogManager.info(TAG, "On success download");
                 mBitmap = iBitmap;
                 if (mOnBitmapReady != null)
                     mOnBitmapReady.onBitmapReady();
@@ -41,6 +45,13 @@ public class ArticleObject {
             }
         });
         mBitmapAsyncTask.execute(mURLToImage);
+    }
+
+    public void abortImageDownload() {
+        if (mBitmapAsyncTask != null) {
+            mBitmapAsyncTask.cancel(true);
+        }
+        mBitmap = null;
     }
 
     public String getTitle() {

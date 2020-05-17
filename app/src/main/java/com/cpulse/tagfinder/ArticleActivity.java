@@ -6,6 +6,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +27,7 @@ public class ArticleActivity extends AppCompatActivity {
     private ArticleAdapter mArticleAdapter;
     private ProgressBar mProgressBar;
     private String mAPIQuery;
+    private ArticleObject[] mArticleObjects;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,8 +46,19 @@ public class ArticleActivity extends AppCompatActivity {
         initializeRequestAPI();
     }
 
+    @Override
+    protected void onDestroy() {
+        if (mArticleObjects != null) {
+            for (ArticleObject lItem : mArticleObjects) {
+                lItem.abortImageDownload();
+            }
+        }
+        super.onDestroy();
+    }
+
     private void initializeGUI() {
         mProgressBar = findViewById(R.id.article_loading_logo);
+        ((TextView) findViewById(R.id.article_title)).setText(mAPIQuery);
 
         mRecyclerView = findViewById(R.id.article_recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -55,7 +68,7 @@ public class ArticleActivity extends AppCompatActivity {
 
     private void initializeRequestAPI() {
         NewsAPIRequest lRequest = new NewsAPIRequest();
-        lRequest.requestForArticleAndBlog("test", new NewsAPIRequest.OnRequestResult() {
+        lRequest.requestForArticleAndBlog(mAPIQuery, new NewsAPIRequest.OnRequestResult() {
             @Override
             public void onRequestResult(final ArticleObject[] iArticleObjects) {
                 runOnUiThread(new Runnable() {
@@ -63,6 +76,7 @@ public class ArticleActivity extends AppCompatActivity {
                     public void run() {
                         hideLoadingLogo();
                         showRecyclerView(iArticleObjects);
+                        mArticleObjects = iArticleObjects;
                     }
                 });
             }

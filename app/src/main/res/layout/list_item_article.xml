@@ -17,6 +17,7 @@
         android:layout_height="match_parent">
 
         <ProgressBar
+            android:id="@+id/article_item_loading_logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true" />Z
@@ -26,9 +27,8 @@
             android:layout_width="100dp"
             android:layout_height="56dp"
             android:layout_centerVertical="true"
-            android:background="@color/colorPrimary"
             android:contentDescription="Article image"
-            android:visibility="gone" />
+            android:visibility="invisible" />
 
 
 

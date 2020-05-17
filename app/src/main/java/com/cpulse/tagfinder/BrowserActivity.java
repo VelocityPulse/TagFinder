@@ -148,9 +148,6 @@ public class BrowserActivity extends AppCompatActivity {
         String lHTML = ((TagFinderWebViewClient) mWebView.getWebViewClient()).getHTML();
 
         String[] lTags = MetaParser.getArticlesTag(lHTML);
-        for (String lItem : lTags) {
-            LogManager.error(TAG, lItem);
-        }
         if (lTags.length < 1) {
             Utils.showToast(this, "No articles found");
         } else {

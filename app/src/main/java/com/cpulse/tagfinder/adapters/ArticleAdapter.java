@@ -8,6 +8,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -36,53 +37,60 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.CustomIt
         return new ArticleAdapter.CustomItemViewAdapter(lLayout,
                 (ImageView) lLayout.findViewById(R.id.article_item_image),
                 (TextView) lLayout.findViewById(R.id.article_item_primary_text),
-                (TextView) lLayout.findViewById(R.id.article_item_secondary_text));
+                (TextView) lLayout.findViewById(R.id.article_item_secondary_text),
+                (ProgressBar) lLayout.findViewById(R.id.article_item_loading_logo));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final CustomItemViewAdapter iHolder, int iPosition) {
+    public void onBindViewHolder(@NonNull final CustomItemViewAdapter iHolder, final int iPosition) {
         final ArticleObject lArticleObject = mArticleObjects[iPosition];
 
         if (lArticleObject.getBitmap() == null) {
             lArticleObject.setOnBitmapReady(new ArticleObject.OnBitmapReady() {
                 @Override
                 public void onBitmapReady() {
+                    LogManager.info(TAG, "Update bitmap ready for position : " + iPosition);
                     iHolder.mImageView.setImageBitmap(lArticleObject.getBitmap());
-                    showImageView(iHolder.mImageView);
+                    showImageView(iHolder.mImageView, iHolder.mProgressBar);
+                    iHolder.mImageView.invalidate();
                 }
             });
             lArticleObject.startImageDownload();
-            iHolder.mImageView.setVisibility(View.GONE);
+            iHolder.mImageView.setVisibility(View.INVISIBLE);
+            iHolder.mProgressBar.setVisibility(View.VISIBLE);
         }
-        else
+        else {
+            iHolder.mImageView.setVisibility(View.VISIBLE);
             iHolder.mImageView.setImageBitmap(lArticleObject.getBitmap());
+        }
 
         iHolder.mPrimaryText.setText(lArticleObject.getTitle());
         iHolder.mSecondaryText.setText(lArticleObject.getDescription());
         iHolder.mMainLayout.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View iV) {
 
             }
         });
     }
 
-    private void showImageView(final ImageView iImageView) {
+    private void showImageView(final ImageView iImageView, final ProgressBar iProgressBar) {
         AlphaAnimation lFadeIn = new AlphaAnimation(0, 1);
         lFadeIn.setInterpolator(new AccelerateInterpolator());
         lFadeIn.setDuration(800);
         lFadeIn.setAnimationListener(new Animation.AnimationListener() {
             @Override
-            public void onAnimationStart(Animation animation) {
+            public void onAnimationStart(Animation iAnimation) {
                 iImageView.setVisibility(View.VISIBLE);
             }
 
             @Override
-            public void onAnimationEnd(Animation animation) {
+            public void onAnimationEnd(Animation iAnimation) {
+                iProgressBar.setVisibility(View.INVISIBLE);
             }
 
             @Override
-            public void onAnimationRepeat(Animation animation) {
+            public void onAnimationRepeat(Animation iAnimation) {
             }
         });
 
@@ -93,6 +101,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.CustomIt
     public void onViewRecycled(@NonNull CustomItemViewAdapter iHolder) {
         ArticleObject lArticleObject = mArticleObjects[iHolder.getAdapterPosition()];
         lArticleObject.setOnBitmapReady(null);
+        iHolder.mProgressBar.setVisibility(View.VISIBLE);
         super.onViewRecycled(iHolder);
     }
 
@@ -111,13 +120,17 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.CustomIt
         ImageView mImageView;
         TextView mPrimaryText;
         TextView mSecondaryText;
+        ProgressBar mProgressBar;
 
-        public CustomItemViewAdapter(@NonNull View iMainLayout, ImageView iImageView, TextView iPrimaryText, TextView iSecondaryText) {
+        public CustomItemViewAdapter(@NonNull View iMainLayout, ImageView iImageView,
+                                     TextView iPrimaryText, TextView iSecondaryText,
+                                     ProgressBar iProgressBar) {
             super(iMainLayout);
             mMainLayout = iMainLayout;
             mImageView = iImageView;
             mPrimaryText = iPrimaryText;
             mSecondaryText = iSecondaryText;
+            mProgressBar = iProgressBar;
         }
     }
 }

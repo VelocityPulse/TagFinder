@@ -29,7 +29,6 @@ public class ImageDownloaderAsyncTask extends AsyncTask<String, Void, Bitmap> {
 
     @Override
     protected void onPostExecute(Bitmap iBitmap) {
-        LogManager.debug("TAG", "On post execute");
         if (isCancelled() || iBitmap == null) {
             return;
         }
@@ -40,7 +39,6 @@ public class ImageDownloaderAsyncTask extends AsyncTask<String, Void, Bitmap> {
     }
 
     private Bitmap downloadBitmap(String iUrl) {
-        LogManager.info(TAG, "Download Bitmap");
         HttpURLConnection lURLConnection = null;
 
         try {
