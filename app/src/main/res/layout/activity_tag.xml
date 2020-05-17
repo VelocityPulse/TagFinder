@@ -27,7 +27,9 @@
                 android:layout_height="match_parent"
                 android:background="@drawable/ripple_effect"
                 android:backgroundTint="@color/colorPrimary"
+                android:contentDescription="home button"
                 android:iconTint="@color/colorIcons"
+                android:onClick="onHomeButtonPressed"
                 android:paddingLeft="9dp"
                 android:paddingRight="9dp"
                 android:src="@drawable/ic_arrow_back" />

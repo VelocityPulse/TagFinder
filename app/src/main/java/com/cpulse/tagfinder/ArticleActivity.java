@@ -1,6 +1,7 @@
 package com.cpulse.tagfinder;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -63,5 +64,9 @@ public class ArticleActivity extends AppCompatActivity {
         lRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mArticleAdapter = new ArticleAdapter(new ArticleObject[0]);
         lRecyclerView.setAdapter(mArticleAdapter);
+    }
+
+    public void onHomeButtonPressed(View view) {
+        onBackPressed();
     }
 }

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -72,5 +73,9 @@ public class TagActivity extends AppCompatActivity {
         Intent myIntent = new Intent(TagActivity.this, ArticleActivity.class);
         myIntent.putExtra(ArticleActivity.KEY_API_QUERY, mTags[iTagIndex]);
         startActivity(myIntent);
+    }
+
+    public void onHomeButtonPressed(View view) {
+        onBackPressed();
     }
 }
