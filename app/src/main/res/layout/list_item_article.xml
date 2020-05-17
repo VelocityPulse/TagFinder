@@ -42,6 +42,8 @@
             android:id="@+id/article_item_primary_text"
             android:layout_width="match_parent"
             android:layout_height="28dp"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:gravity="bottom"
             android:text="Debug"
             android:textColor="@android:color/black"
